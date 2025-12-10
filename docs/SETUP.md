@@ -1,274 +1,191 @@
 # Complete Setup Guide
 
-Step-by-step instructions to get Discord Clone running on your machine.
+Step-by-step guide to get Discord Clone running on your machine.
 
 ## Prerequisites
 
 ### Required Software
 
-1. **Python 3.10 or higher**
-   - Download: https://www.python.org/downloads/
-   - Verify: `python --version`
+- **Python 3.10+** - [Download](https://www.python.org/downloads/)
+- **Godot 4.2+** - [Download](https://godotengine.org/download)
+- **Git** - [Download](https://git-scm.com/downloads)
 
-2. **Godot 4.2 or higher**
-   - Download: https://godotengine.org/download
-   - Extract and run the executable
-
-3. **Git** (optional, for cloning)
-   - Download: https://git-scm.com/downloads
-
----
-
-## Part 1: Backend Setup
-
-### Step 1: Clone or Download Repository
+### Verify Installation
 
 ```bash
-# Using Git
-git clone https://github.com/SignalScp/discord-clone.git
-cd discord-clone
-
-# Or download ZIP and extract
+python --version  # Should show 3.10 or higher
+git --version
 ```
 
-### Step 2: Navigate to Backend Directory
+## Installation
+
+### Step 1: Clone Repository
+
+```bash
+git clone https://github.com/SignalScp/discord-clone.git
+cd discord-clone
+```
+
+### Step 2: Backend Setup
+
+#### On Windows
 
 ```bash
 cd backend
-```
-
-### Step 3: Create Virtual Environment
-
-**On Windows:**
-```cmd
-python -m venv venv
-venv\Scripts\activate
-```
-
-**On Linux/Mac:**
-```bash
-python3 -m venv venv
-source venv/bin/activate
-```
-
-You should see `(venv)` in your terminal prompt.
-
-### Step 4: Install Dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-This will install:
-- FastAPI
-- Uvicorn
-- SQLAlchemy
-- Pydantic
-- JWT libraries
-- And other dependencies
-
-### Step 5: Configure Environment
-
-**Windows:**
-```cmd
-copy .env.example .env
-```
-
-**Linux/Mac:**
-```bash
-cp .env.example .env
-```
-
-**IMPORTANT:** Open `.env` and change `SECRET_KEY` to a random string:
-
-```env
-SECRET_KEY=your-super-secret-random-key-here-change-this
-```
-
-Generate a secure key:
-```bash
-python -c "import secrets; print(secrets.token_hex(32))"
-```
-
-### Step 6: Start Backend Server
-
-**Using the startup script (recommended):**
-
-**Windows:**
-```cmd
 run.bat
 ```
 
-**Linux/Mac:**
+The script will:
+1. Create virtual environment
+2. Install dependencies
+3. Create .env file from example
+4. Start the server
+
+#### On Linux/Mac
+
 ```bash
+cd backend
 chmod +x run.sh
 ./run.sh
 ```
 
-**Or manually:**
+#### Manual Setup (Alternative)
+
 ```bash
+cd backend
+
+# Create virtual environment
+python -m venv venv
+
+# Activate (Windows)
+venv\Scripts\activate
+
+# Activate (Linux/Mac)
+source venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Create .env file
+cp .env.example .env
+
+# Generate secure secret key
+python -c "import secrets; print(secrets.token_hex(32))"
+# Copy output and paste into .env as SECRET_KEY
+
+# Start server
 python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-### Step 7: Verify Backend is Running
+#### Verify Backend is Running
 
-Open your browser and visit:
-- **API**: http://localhost:8000
-- **Interactive Docs**: http://localhost:8000/docs
-- **Health Check**: http://localhost:8000/health
+Open browser and visit:
+- API: http://localhost:8000
+- Docs: http://localhost:8000/docs
 
-You should see the API documentation page.
+You should see the interactive API documentation.
 
----
+### Step 3: Frontend Setup
 
-## Part 2: Frontend Setup
+1. **Download Godot**
+   - Visit https://godotengine.org/download
+   - Download Godot 4.2 or newer
+   - Extract and run
 
-### Step 1: Open Godot Engine
+2. **Import Project**
+   - Open Godot
+   - Click "Import"
+   - Navigate to `discord-clone/frontend/`
+   - Select `project.godot`
+   - Click "Import & Edit"
 
-1. Launch Godot 4.x
-2. Click **"Import"** button
-3. Click **"Browse"**
-4. Navigate to `discord-clone/frontend/`
-5. Select `project.godot` file
-6. Click **"Import & Edit"**
+3. **Configure Backend URL**
+   - In Godot, open `scripts/global/NetworkManager.gd`
+   - Verify URLs:
+     ```gdscript
+     const API_BASE_URL = "http://localhost:8000"
+     const WS_BASE_URL = "ws://localhost:8000"
+     ```
 
-### Step 2: Configure Backend URL (if needed)
+4. **Run Frontend**
+   - Press **F5** or click the Play button
+   - Login screen should appear
 
-If your backend is not on localhost:8000, edit:
+## First Time Usage
 
-**File:** `scripts/global/NetworkManager.gd`
+### 1. Create Account
 
-```gdscript
-const API_BASE_URL = "http://localhost:8000"
-const WS_BASE_URL = "ws://localhost:8000"
-```
-
-Change to your backend URL.
-
-### Step 3: Run the Application
-
-1. Press **F5** or click the **Play** button (▶️) in top-right
-2. Login screen should appear
-
----
-
-## Part 3: First Run
-
-### Create Your First Account
-
-1. Click **"Register"** tab
+1. Click "Register" tab
 2. Enter:
    - Username (min 3 characters)
-   - Email (valid email format)
+   - Email address
    - Password (min 6 characters)
-   - Confirm Password (must match)
-3. Click **"Create Account"**
+   - Confirm password
+3. Click "Create Account"
 4. You'll be automatically logged in
 
-### Create Your First Server
+### 2. Create Your First Server
 
-1. Click the **"+"** button in the server list (left sidebar)
+1. Click the **+** button in the left sidebar (server list)
 2. Enter server name (e.g., "My Server")
-3. Optional: Add description
-4. Click **"Create"**
-5. A default "general" channel is created automatically
+3. Optionally add description
+4. Click "Create"
+5. A default "general" channel will be created
 
-### Start Chatting
+### 3. Start Chatting
 
-1. Server should be selected automatically
-2. Click on **"# general"** channel
-3. Type a message in the input field at bottom
-4. Press **Enter** or click **"Send"**
-5. Your message appears in the chat!
+1. Select your server from the left sidebar
+2. Select "general" channel
+3. Type a message in the input field
+4. Press Enter or click "Send"
 
-### Test Real-time Features
+### 4. Invite Friends (Multi-User Testing)
 
-**To test real-time messaging:**
+1. Open another Godot instance or export as executable
+2. Register a different account
+3. Both users need to join the same server (manual for now)
+4. Select the same channel
+5. Messages will appear in real-time!
 
-1. Open a second instance of the app (export or run in editor again)
-2. Register a second user
-3. Have the first user invite the second to their server (future feature)
-4. Or: Create a server with second user and note the server ID
-5. Manually add first user to database (temporary workaround)
-6. Both users should see messages in real-time
+## Configuration
 
----
+### Backend Configuration (.env)
 
-## Troubleshooting
+```env
+# Security - CHANGE THIS IN PRODUCTION!
+SECRET_KEY=your-super-secret-key-here
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=1440
 
-### Backend Issues
+# Database
+DATABASE_URL=sqlite:///./discord_clone.db
 
-#### "Address already in use" Error
+# Server
+HOST=0.0.0.0
+PORT=8000
 
-**Windows:**
-```cmd
-netstat -ano | findstr :8000
-taskkill /PID <PID> /F
+# CORS
+ALLOWED_ORIGINS=http://localhost:*,http://127.0.0.1:*
+
+# Environment
+ENVIRONMENT=development
 ```
 
-**Linux/Mac:**
-```bash
-lsof -ti:8000 | xargs kill -9
-```
+### Using PostgreSQL (Production)
 
-#### "Module not found" Error
-
-Make sure virtual environment is activated:
-```bash
-# Should show (venv) in prompt
-pip install -r requirements.txt
-```
-
-#### Database Errors
-
-Delete and recreate database:
-```bash
-rm discord_clone.db
-# Restart server (it will recreate the database)
-```
-
-### Frontend Issues
-
-#### "Cannot connect to backend"
-
-1. Verify backend is running: http://localhost:8000
-2. Check `NetworkManager.gd` has correct URL
-3. Check firewall settings
-4. Try http://127.0.0.1:8000 instead
-
-#### "Godot version mismatch"
-
-Project requires Godot 4.2+. Update Godot if needed.
-
-#### "Script errors on run"
-
-1. Check all scripts are in correct locations
-2. Verify autoload paths in Project Settings
-3. Close and reopen Godot
-
-#### WebSocket Connection Failed
-
-1. Check JWT token is valid (re-login)
-2. Verify WebSocket URL in NetworkManager
-3. Check browser console for errors
-4. Ensure backend WebSocket endpoint is running
-
-### General Issues
-
-#### "No servers showing"
-
-1. Create a server first (+ button)
-2. Check browser console for API errors
-3. Verify authentication token
-
-#### "Messages not appearing"
-
-1. Check WebSocket connection status
-2. Verify channel is selected
-3. Check backend logs for errors
-4. Try refreshing (close and reopen app)
-
----
+1. Install PostgreSQL
+2. Create database:
+   ```sql
+   CREATE DATABASE discord_clone;
+   ```
+3. Update `.env`:
+   ```env
+   DATABASE_URL=postgresql://username:password@localhost/discord_clone
+   ```
+4. Install additional dependency:
+   ```bash
+   pip install psycopg2-binary
+   ```
 
 ## Testing
 
@@ -276,202 +193,236 @@ Project requires Godot 4.2+. Update Godot if needed.
 
 ```bash
 cd backend
-pytest tests/
+pytest
+
+# With coverage
+pytest --cov=app tests/
+
+# Verbose output
+pytest -v
 ```
 
-### Manual Testing Checklist
+### Manual Testing
 
-- [ ] User registration works
-- [ ] User login works
-- [ ] Server creation works
-- [ ] Channel creation works
-- [ ] Message sending works
-- [ ] Message history loads
-- [ ] Real-time updates work
-- [ ] User list shows online status
-- [ ] Logout works
+1. **Test Registration**
+   - Try valid registration
+   - Try duplicate username
+   - Try invalid email
 
----
+2. **Test Login**
+   - Try correct credentials
+   - Try wrong password
+   - Try non-existent user
 
-## Production Deployment
+3. **Test Messaging**
+   - Send messages
+   - Open two clients
+   - Verify real-time delivery
 
-### Backend
+4. **Test WebSocket**
+   - Disconnect network
+   - Verify reconnection
+   - Check error messages
 
-#### Using Docker (recommended)
+## Troubleshooting
 
-```dockerfile
-# Dockerfile
-FROM python:3.10-slim
+### Backend Issues
 
-WORKDIR /app
+#### "Port 8000 already in use"
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-COPY . .
-
-EXPOSE 8000
-
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+**Windows:**
+```bash
+netstat -ano | findstr :8000
+taskkill /PID <process_id> /F
 ```
+
+**Linux/Mac:**
+```bash
+lsof -i :8000
+kill -9 <PID>
+```
+
+#### "Module not found"
 
 ```bash
-docker build -t discord-clone-backend .
-docker run -p 8000:8000 discord-clone-backend
+# Ensure virtual environment is activated
+pip install -r requirements.txt
 ```
 
-#### Using Gunicorn
+#### "Database is locked"
 
 ```bash
-pip install gunicorn
-gunicorn app.main:app -w 4 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000
+# Stop all running instances
+# Delete database
+rm discord_clone.db
+# Restart server (database will be recreated)
 ```
 
-#### Environment Variables for Production
+### Frontend Issues
 
-```env
-SECRET_KEY=<VERY-SECURE-RANDOM-KEY>
-DATABASE_URL=postgresql://user:password@localhost/discord_clone
-ENVIRONMENT=production
-ALLOWED_ORIGINS=https://yourdomain.com
-```
+#### "Cannot connect to backend"
 
-### Frontend
+1. Verify backend is running: http://localhost:8000
+2. Check `NetworkManager.gd` configuration
+3. Check firewall settings
+4. Try http://127.0.0.1:8000 instead
 
-1. Open Godot
-2. Go to **Project → Export**
-3. Add export preset:
-   - Windows Desktop
-   - Linux/X11
-   - macOS
-4. Configure export settings
-5. Click **Export Project**
-6. Distribute the executable
+#### "WebSocket connection failed"
 
----
+1. Check browser console (if web export)
+2. Verify JWT token is valid
+3. Check backend logs
+4. Ensure WebSocket endpoint is accessible
 
-## Performance Tuning
+#### "Godot won't import project"
 
-### Backend
+1. Ensure Godot 4.2+
+2. Delete `.godot` folder and re-import
+3. Check file permissions
 
-1. **Use PostgreSQL instead of SQLite**
-   ```env
-   DATABASE_URL=postgresql://user:pass@localhost/dbname
-   ```
+### Common Errors
 
-2. **Enable connection pooling**
-   ```python
-   engine = create_engine(
-       settings.DATABASE_URL,
-       pool_size=20,
-       max_overflow=40
-   )
-   ```
+#### "401 Unauthorized"
+- Token expired (login again)
+- Invalid token
+- Missing Authorization header
 
-3. **Add Redis for caching**
-   ```bash
-   pip install redis
-   ```
+#### "403 Forbidden"
+- Not a member of server/channel
+- Insufficient permissions
 
-### Frontend
+#### "404 Not Found"
+- Server/channel/message doesn't exist
+- Incorrect ID
 
-1. **Reduce message history limit**
-   ```gdscript
-   # Load only 20 messages initially
-   var result = await NetworkManager.http_request(
-       "GET",
-       "/messages/channels/%d/messages?limit=20" % channel_id,
-       {},
-       AuthManager.get_token()
-   )
-   ```
+## Development
 
-2. **Implement message pagination**
-   - Load more on scroll up
-   - Keep only recent messages in memory
-
----
-
-## Security Checklist
-
-### For Production
-
-- [ ] Change SECRET_KEY to random value
-- [ ] Use HTTPS (not HTTP)
-- [ ] Enable CORS only for your domain
-- [ ] Use PostgreSQL (not SQLite)
-- [ ] Set up rate limiting
-- [ ] Enable logging
-- [ ] Regular backups
-- [ ] Monitor for suspicious activity
-- [ ] Keep dependencies updated
-- [ ] Use environment variables (not hardcoded)
-
----
-
-## Getting Help
-
-### Resources
-
-- **FastAPI Docs**: https://fastapi.tiangolo.com/
-- **Godot Docs**: https://docs.godotengine.org/
-- **SQLAlchemy Docs**: https://docs.sqlalchemy.org/
-
-### Common Commands Reference
+### Running in Development Mode
 
 **Backend:**
 ```bash
-# Start server
-python -m uvicorn app.main:app --reload
-
-# Run tests
-pytest tests/
-
-# Check code style
-black app/
-flake8 app/
+cd backend
+python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-**Database:**
-```bash
-# Reset database
-rm discord_clone.db
+**Frontend:**
+- Just press F5 in Godot editor
 
-# Backup database
-cp discord_clone.db discord_clone.db.backup
+### Hot Reload
+
+- **Backend**: Automatically reloads on file changes (with `--reload` flag)
+- **Frontend**: Press F5 in Godot to reload
+
+### Debugging
+
+**Backend:**
+```python
+import pdb; pdb.set_trace()  # Add breakpoint
 ```
 
----
+**Frontend:**
+- Use Godot's built-in debugger (F6)
+- Check Output panel for `print()` statements
+- Use `push_warning()` and `push_error()` for debugging
+
+### Code Style
+
+**Backend (Python):**
+- Follow PEP 8
+- Use type hints
+- Document all functions
+- Max line length: 100
+
+**Frontend (GDScript):**
+- Follow Godot style guide
+- Use type hints
+- Document public functions
+- Use tabs for indentation
+
+## Production Deployment
+
+### Backend Deployment
+
+1. **Update .env for production:**
+   ```env
+   ENVIRONMENT=production
+   SECRET_KEY=<very-long-random-string>
+   DATABASE_URL=postgresql://...
+   ALLOWED_ORIGINS=https://yourdomain.com
+   ```
+
+2. **Use production server:**
+   ```bash
+   pip install gunicorn
+   gunicorn app.main:app -w 4 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000
+   ```
+
+3. **Set up reverse proxy (Nginx):**
+   ```nginx
+   server {
+       listen 80;
+       server_name api.yourdomain.com;
+       
+       location / {
+           proxy_pass http://localhost:8000;
+           proxy_set_header Host $host;
+           proxy_set_header X-Real-IP $remote_addr;
+       }
+       
+       location /ws/ {
+           proxy_pass http://localhost:8000;
+           proxy_http_version 1.1;
+           proxy_set_header Upgrade $http_upgrade;
+           proxy_set_header Connection "upgrade";
+       }
+   }
+   ```
+
+### Frontend Export
+
+1. **Configure export preset:**
+   - Project → Export
+   - Add preset for your platform
+   - Configure settings
+
+2. **Export:**
+   - Click "Export Project"
+   - Choose location
+   - Click "Save"
+
+3. **Distribute:**
+   - Share executable with users
+   - No installation required
 
 ## Next Steps
 
-1. **Customize the UI**
-   - Edit Godot scenes
-   - Add custom themes
-   - Create custom icons
+### Learning Resources
 
-2. **Add Features**
-   - Direct messages
-   - File uploads
-   - Voice channels
-   - User profiles
-   - Server invites
+- **FastAPI**: https://fastapi.tiangolo.com/
+- **SQLAlchemy**: https://www.sqlalchemy.org/
+- **Godot**: https://docs.godotengine.org/
+- **WebSockets**: https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API
 
-3. **Improve Performance**
-   - Add caching
-   - Optimize database queries
-   - Implement lazy loading
+### Feature Ideas
 
-4. **Deploy to Production**
-   - Set up cloud hosting
-   - Configure domain
-   - Enable HTTPS
-   - Set up monitoring
+- Direct messages
+- File uploads
+- Voice channels
+- User avatars
+- Server invites
+- Roles and permissions
+- Message reactions
+- Message editing/deletion
+- User presence (typing indicator)
+- Server settings
 
----
+## Support
 
-## Success!
+For issues and questions:
+- Check existing documentation
+- Review API docs: http://localhost:8000/docs
+- Open issue on GitHub
 
-You now have a fully functional Discord clone running locally! 🎉
+## License
 
-For questions or issues, check the documentation or open an issue on GitHub.
+MIT License - See LICENSE file for details

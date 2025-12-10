@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://c7ov9qwxno4zl"]
+[gd_scene load_steps=6 format=3 uid="uid://c3vmr8h4p7wxy"]
 
 [ext_resource type="Script" path="res://scripts/scenes/MainScene.gd" id="1_main"]
 [ext_resource type="Script" path="res://scripts/scenes/ServerList.gd" id="2_server"]
@@ -46,13 +46,14 @@ theme_override_constants/separation = 10
 layout_mode = 2
 text = "+"
 
-[node name="MiddlePanel" type="HBoxContainer" parent="HBoxContainer"]
+[node name="MiddlePanel" type="VBoxContainer" parent="HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="ChannelList" type="VBoxContainer" parent="HBoxContainer/MiddlePanel"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
+size_flags_vertical = 3
 script = ExtResource("3_channel")
 
 [node name="ColorRect" type="ColorRect" parent="HBoxContainer/MiddlePanel/ChannelList"]
@@ -62,11 +63,7 @@ color = Color(0.18, 0.18, 0.22, 1)
 
 [node name="ServerNameLabel" type="Label" parent="HBoxContainer/MiddlePanel/ChannelList"]
 layout_mode = 2
-text = "Server Name"
-horizontal_alignment = 1
-
-[node name="HSeparator" type="HSeparator" parent="HBoxContainer/MiddlePanel/ChannelList"]
-layout_mode = 2
+text = "Select a server"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/MiddlePanel/ChannelList"]
 layout_mode = 2
@@ -79,20 +76,24 @@ size_flags_horizontal = 3
 [node name="ChatUI" type="VBoxContainer" parent="HBoxContainer/MiddlePanel"]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource("4_chat")
 
-[node name="ChannelHeader" type="PanelContainer" parent="HBoxContainer/MiddlePanel/ChatUI"]
+[node name="ColorRect" type="ColorRect" parent="HBoxContainer/MiddlePanel/ChatUI"]
+layout_mode = 2
+size_flags_vertical = 3
+color = Color(0.22, 0.22, 0.26, 1)
+
+[node name="ChannelHeader" type="HBoxContainer" parent="HBoxContainer/MiddlePanel/ChatUI"]
 layout_mode = 2
 
 [node name="ChannelNameLabel" type="Label" parent="HBoxContainer/MiddlePanel/ChatUI/ChannelHeader"]
 layout_mode = 2
-text = "# channel-name"
+text = "# Select a channel"
 
 [node name="MessagesScroll" type="ScrollContainer" parent="HBoxContainer/MiddlePanel/ChatUI"]
 layout_mode = 2
 size_flags_vertical = 3
-follow_focus = true
-scroll_vertical_custom_step = 50.0
 
 [node name="MessagesContainer" type="VBoxContainer" parent="HBoxContainer/MiddlePanel/ChatUI/MessagesScroll"]
 layout_mode = 2
@@ -124,10 +125,6 @@ color = Color(0.18, 0.18, 0.22, 1)
 [node name="TitleLabel" type="Label" parent="HBoxContainer/UserList"]
 layout_mode = 2
 text = "Members"
-horizontal_alignment = 1
-
-[node name="HSeparator" type="HSeparator" parent="HBoxContainer/UserList"]
-layout_mode = 2
 
 [node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/UserList"]
 layout_mode = 2
