@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://dbm3k5yh2vxyx"]
+
+[node name="ServerButton" type="Button"]
+custom_minimum_size = Vector2(60, 60)
+text = "S"
